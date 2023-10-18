@@ -1,0 +1,28 @@
+<ng-container>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" required>
+      <div *ngIf="userForm.controls['name'].invalid && userForm.controls['name'].touched">
+        Name is required.
+      </div>
+    </div>
+
+    <div *ngIf="(sectors$ | async)?.length">
+      <label for="sectors">Sectors:</label>
+      <select id="sectors" formControlName="sectors" [compareWith]="compareSectors" multiple required>
+        <option *ngFor="let sector of sectors$ | async" [value]="sector">{{ sector.codeText }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="agreeToTerms">Agree to terms:</label>
+      <input type="checkbox" id="agreeToTerms" formControlName="agreeToTerms" required>
+      <div *ngIf="userForm.controls['agreeToTerms'].invalid && userForm.controls['agreeToTerms'].touched">
+        You must agree to the terms.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="userForm.invalid">Submit</button>
+  </form>
+</ng-container>
